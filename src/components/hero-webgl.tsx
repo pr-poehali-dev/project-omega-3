@@ -2,6 +2,7 @@ import { Canvas, extend, useFrame } from "@react-three/fiber"
 import { useAspect, useTexture } from "@react-three/drei"
 import { useMemo, useRef, useState, useEffect } from "react"
 import * as THREE from "three"
+import { Search } from "lucide-react"
 
 const TEXTUREMAP = { src: "https://i.postimg.cc/XYwvXN8D/img-4.png" }
 const DEPTHMAP = { src: "https://i.postimg.cc/2SHKQh2q/raw-4.webp" }
@@ -120,6 +121,7 @@ export const Hero3DWebGL = () => {
   const [subtitleVisible, setSubtitleVisible] = useState(false)
   const [delays, setDelays] = useState<number[]>([])
   const [subtitleDelay, setSubtitleDelay] = useState(0)
+  const [search, setSearch] = useState("")
 
   useEffect(() => {
     setDelays(titleWords.map(() => Math.random() * 0.07))
@@ -145,8 +147,8 @@ export const Hero3DWebGL = () => {
         <div className="absolute top-0 bottom-0 right-0 w-32 bg-gradient-to-l from-black to-transparent" />
       </div>
 
-      <div className="h-screen uppercase items-center w-full absolute z-[60] pointer-events-none px-10 flex justify-center flex-col">
-        <div className="text-3xl md:text-5xl xl:text-6xl 2xl:text-7xl font-extrabold font-orbitron">
+      <div className="h-screen uppercase items-center w-full absolute z-[60] px-10 flex justify-center flex-col">
+        <div className="text-3xl md:text-5xl xl:text-6xl 2xl:text-7xl font-extrabold font-orbitron pointer-events-none">
           <div className="flex space-x-2 lg:space-x-6 overflow-hidden text-white">
             {titleWords.map((word, index) => (
               <div
@@ -162,7 +164,7 @@ export const Hero3DWebGL = () => {
             ))}
           </div>
         </div>
-        <div className="text-xs md:text-xl xl:text-2xl 2xl:text-3xl mt-2 overflow-hidden text-white font-bold max-w-4xl mx-auto text-center px-4">
+        <div className="text-xs md:text-xl xl:text-2xl 2xl:text-3xl mt-2 overflow-hidden text-white font-bold max-w-4xl mx-auto text-center px-4 pointer-events-none">
           <div
             className={subtitleVisible ? "fade-in-subtitle" : ""}
             style={{
@@ -171,6 +173,23 @@ export const Hero3DWebGL = () => {
             }}
           >
             {subtitle}
+          </div>
+        </div>
+
+        <div className="mt-8 w-full max-w-2xl mx-auto">
+          <div className="relative">
+            <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" size={20} />
+            <input
+              type="text"
+              value={search}
+              onChange={(e) => {
+                setSearch(e.target.value)
+                const event = new CustomEvent("neural-search", { detail: e.target.value })
+                window.dispatchEvent(event)
+              }}
+              placeholder="Найти нейросеть... (ChatGPT, Midjourney, DeepSeek)"
+              className="w-full pl-12 pr-4 py-4 rounded-xl bg-white/10 backdrop-blur-md border border-white/20 text-white placeholder-gray-400 focus:outline-none focus:border-red-500 focus:bg-white/15 transition-all text-base font-normal normal-case"
+            />
           </div>
         </div>
       </div>
