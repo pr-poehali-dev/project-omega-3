@@ -1,6 +1,4 @@
 import { useState, useEffect } from "react"
-import { Badge } from "@/components/ui/badge"
-import { Button } from "@/components/ui/button"
 import Icon from "@/components/ui/icon"
 
 const AI_MODELS = [
@@ -9,22 +7,28 @@ const AI_MODELS = [
     company: "OpenAI",
     description: "Самый популярный ИИ-ассистент. Пишет тексты, отвечает на вопросы, помогает с кодом.",
     logo: "https://upload.wikimedia.org/wikipedia/commons/0/04/ChatGPT_logo.svg",
-    url: "https://chat.openai.com",
+    url: "https://chatgpt.com",
+    urlLabel: "chatgpt.com",
     tags: ["Текст", "Код", "Аналитика"],
     badge: "🔥 Топ",
     badgeColor: "bg-red-500/20 text-red-400 border-red-500/30",
     free: true,
+    vpn: true,
+    vpnNote: "Нужен VPN для РФ",
   },
   {
     name: "DeepSeek",
     company: "DeepSeek AI",
     description: "Мощная открытая модель. Отлично справляется с кодом, математикой и анализом данных.",
     logo: "https://upload.wikimedia.org/wikipedia/commons/e/ec/DeepSeek_logo.svg",
-    url: "https://chat.deepseek.com",
+    url: "https://www.deepseek.com",
+    urlLabel: "deepseek.com",
     tags: ["Код", "Математика", "Текст"],
     badge: "⚡ Быстро",
     badgeColor: "bg-blue-500/20 text-blue-400 border-blue-500/30",
     free: true,
+    vpn: false,
+    vpnNote: null,
   },
   {
     name: "Gemini",
@@ -32,10 +36,13 @@ const AI_MODELS = [
     description: "ИИ от Google с доступом к актуальным данным из интернета и интеграцией с сервисами Google.",
     logo: "https://upload.wikimedia.org/wikipedia/commons/8/8a/Google_Gemini_logo.svg",
     url: "https://gemini.google.com",
+    urlLabel: "gemini.google.com",
     tags: ["Текст", "Поиск", "Мультимодал"],
     badge: "🌐 Google",
     badgeColor: "bg-green-500/20 text-green-400 border-green-500/30",
     free: true,
+    vpn: true,
+    vpnNote: "Нужен VPN для РФ",
   },
   {
     name: "Claude",
@@ -43,21 +50,27 @@ const AI_MODELS = [
     description: "Безопасный и умный ассистент. Превосходно анализирует длинные документы и пишет тексты.",
     logo: "https://upload.wikimedia.org/wikipedia/commons/8/8a/Claude_AI_logo.svg",
     url: "https://claude.ai",
+    urlLabel: "claude.ai",
     tags: ["Текст", "Анализ", "Безопасность"],
     badge: "🧠 Умный",
     badgeColor: "bg-orange-500/20 text-orange-400 border-orange-500/30",
     free: true,
+    vpn: true,
+    vpnNote: "Нужен VPN для РФ",
   },
   {
-    name: "Midjourney",
-    company: "Midjourney Inc.",
-    description: "Лучший генератор изображений для художественного контента. Создаёт поразительные иллюстрации.",
-    logo: "https://upload.wikimedia.org/wikipedia/commons/e/e6/Midjourney_Emblem.png",
-    url: "https://midjourney.com",
-    tags: ["Изображения", "Арт", "Дизайн"],
-    badge: "🎨 Арт",
-    badgeColor: "bg-purple-500/20 text-purple-400 border-purple-500/30",
-    free: false,
+    name: "Poe",
+    company: "Quora",
+    description: "Агрегатор нейросетей: GPT-4, Claude, Gemini и другие в одном интерфейсе. Работает без VPN.",
+    logo: "https://upload.wikimedia.org/wikipedia/commons/1/10/Poe-Logo.png",
+    url: "https://poe.com",
+    urlLabel: "poe.com",
+    tags: ["Текст", "Код", "Аналитика"],
+    badge: "✅ Без VPN",
+    badgeColor: "bg-emerald-500/20 text-emerald-400 border-emerald-500/30",
+    free: true,
+    vpn: false,
+    vpnNote: null,
   },
   {
     name: "Grok",
@@ -65,10 +78,13 @@ const AI_MODELS = [
     description: "ИИ от Илона Маска. Интегрирован с X (Twitter), отличается прямолинейными ответами.",
     logo: "https://upload.wikimedia.org/wikipedia/commons/1/19/Grok_logo.svg",
     url: "https://grok.com",
+    urlLabel: "grok.com",
     tags: ["Текст", "Юмор", "Новости"],
     badge: "🚀 xAI",
     badgeColor: "bg-gray-500/20 text-gray-300 border-gray-500/30",
     free: true,
+    vpn: false,
+    vpnNote: null,
   },
   {
     name: "Perplexity",
@@ -76,43 +92,55 @@ const AI_MODELS = [
     description: "ИИ-поисковик с ответами и источниками. Идеален для исследований и поиска актуальных данных.",
     logo: "https://upload.wikimedia.org/wikipedia/commons/1/1f/Perplexity_AI_logo.svg",
     url: "https://perplexity.ai",
+    urlLabel: "perplexity.ai",
     tags: ["Поиск", "Исследования", "Ответы"],
     badge: "🔍 Поиск",
     badgeColor: "bg-cyan-500/20 text-cyan-400 border-cyan-500/30",
     free: true,
+    vpn: false,
+    vpnNote: null,
+  },
+  {
+    name: "Midjourney",
+    company: "Midjourney Inc.",
+    description: "Лучший генератор изображений для художественного контента. Создаёт поразительные иллюстрации.",
+    logo: "https://upload.wikimedia.org/wikipedia/commons/e/e6/Midjourney_Emblem.png",
+    url: "https://midjourney.com",
+    urlLabel: "midjourney.com",
+    tags: ["Изображения", "Арт", "Дизайн"],
+    badge: "🎨 Арт",
+    badgeColor: "bg-purple-500/20 text-purple-400 border-purple-500/30",
+    free: false,
+    vpn: false,
+    vpnNote: null,
   },
   {
     name: "Stable Diffusion",
     company: "Stability AI",
-    description: "Open-source генератор изображений. Можно запустить локально или через API без ограничений.",
+    description: "Open-source генератор изображений. Попробуй прямо в браузере на Hugging Face — без регистрации.",
     logo: "https://upload.wikimedia.org/wikipedia/commons/archive/8/84/20231219052503%21Stability_AI_logo.svg",
-    url: "https://stability.ai",
+    url: "https://huggingface.co/spaces/stabilityai/stable-diffusion",
+    urlLabel: "huggingface.co",
     tags: ["Изображения", "Open-source", "API"],
     badge: "🆓 Free",
     badgeColor: "bg-emerald-500/20 text-emerald-400 border-emerald-500/30",
     free: true,
+    vpn: false,
+    vpnNote: null,
   },
   {
     name: "Llama",
     company: "Meta",
-    description: "Открытая языковая модель от Meta. Можно запустить локально — без цензуры и без платы.",
+    description: "Открытая языковая модель от Meta. Попробуй онлайн на Meta.ai без скачивания.",
     logo: "https://upload.wikimedia.org/wikipedia/commons/a/ab/Meta-Logo.png",
-    url: "https://llama.meta.com",
+    url: "https://meta.ai",
+    urlLabel: "meta.ai",
     tags: ["Open-source", "Текст", "Локально"],
     badge: "🦙 Meta",
     badgeColor: "bg-blue-600/20 text-blue-300 border-blue-600/30",
     free: true,
-  },
-  {
-    name: "Runway",
-    company: "Runway ML",
-    description: "Профессиональный инструмент для генерации и редактирования видео с помощью ИИ.",
-    logo: "https://upload.wikimedia.org/wikipedia/commons/0/09/Runway_ml_logo.png",
-    url: "https://runwayml.com",
-    tags: ["Видео", "Редактирование", "Контент"],
-    badge: "🎬 Видео",
-    badgeColor: "bg-pink-500/20 text-pink-400 border-pink-500/30",
-    free: false,
+    vpn: false,
+    vpnNote: null,
   },
   {
     name: "Suno",
@@ -120,10 +148,13 @@ const AI_MODELS = [
     description: "Генерация музыки по текстовому описанию. Создаёт полноценные треки с вокалом за секунды.",
     logo: "https://upload.wikimedia.org/wikipedia/commons/8/87/Suno_AI_Logo.png",
     url: "https://suno.com",
+    urlLabel: "suno.com",
     tags: ["Музыка", "Аудио", "Творчество"],
     badge: "🎵 Музыка",
     badgeColor: "bg-violet-500/20 text-violet-400 border-violet-500/30",
     free: true,
+    vpn: false,
+    vpnNote: null,
   },
   {
     name: "ElevenLabs",
@@ -131,10 +162,13 @@ const AI_MODELS = [
     description: "Реалистичный синтез голоса и клонирование голоса. Лучший TTS для подкастов и видео.",
     logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/9/9c/ElevenLabs_logo_symbol.svg/800px-ElevenLabs_logo_symbol.svg.png",
     url: "https://elevenlabs.io",
+    urlLabel: "elevenlabs.io",
     tags: ["Голос", "TTS", "Подкасты"],
     badge: "🎙️ Голос",
     badgeColor: "bg-yellow-500/20 text-yellow-400 border-yellow-500/30",
     free: true,
+    vpn: false,
+    vpnNote: null,
   },
 ]
 
@@ -238,12 +272,18 @@ export function CatalogSection() {
 
                 <div className="flex items-center justify-between">
                   <span className={`text-xs font-medium ${model.free ? "text-emerald-400" : "text-yellow-400"}`}>
-                    {model.free ? "✓ Есть бесплатный тариф" : "💳 Платная"}
+                    {model.free ? "✓ Бесплатный тариф" : "💳 Платная"}
                   </span>
                   <span className="text-red-500 group-hover:translate-x-1 transition-transform duration-200 flex items-center gap-1 text-xs">
                     Открыть <Icon name="ArrowRight" size={12} />
                   </span>
                 </div>
+                {model.vpn && (
+                  <div className="mt-3 pt-3 border-t border-white/5 flex items-center gap-1.5">
+                    <span className="text-amber-400 text-xs">⚠️</span>
+                    <span className="text-amber-400/80 text-xs">{model.vpnNote}</span>
+                  </div>
+                )}
               </a>
             ))}
           </div>
