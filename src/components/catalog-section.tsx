@@ -378,8 +378,11 @@ export function CatalogSection() {
                       alt={model.name}
                       className="w-8 h-8 object-contain"
                       onError={(e) => {
-                        ;(e.target as HTMLImageElement).style.display = "none"
-                        ;(e.target as HTMLImageElement).parentElement!.innerHTML = `<span class="text-xl font-bold text-white">${model.name[0]}</span>`
+                        const img = e.target as HTMLImageElement
+                        const parent = img.parentElement
+                        if (parent) {
+                          parent.innerHTML = `<span class="text-xl font-bold text-white">${model.name[0]}</span>`
+                        }
                       }}
                     />
                   </div>
