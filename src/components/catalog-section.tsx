@@ -41,15 +41,31 @@ const AI_MODELS = [
     company: "DeepSeek AI",
     description: "Мощная открытая модель. Отлично справляется с кодом, математикой и анализом данных.",
     logo: "https://upload.wikimedia.org/wikipedia/commons/e/ec/DeepSeek_logo.svg",
-    url: "https://www.deepseek.com",
-    urlLabel: "deepseek.com",
+    url: "https://chat.deepseek.com",
+    urlLabel: "chat.deepseek.com",
     tags: ["Код", "Математика", "Текст"],
-    badge: "⚡ Быстро",
+    badge: "⚡ Официальный",
     badgeColor: "bg-blue-500/20 text-blue-400 border-blue-500/30",
     free: true,
     vpn: false,
     vpnNote: null,
     aliases: ["deepseek", "дипсик", "deep seek"],
+    ruAlternativeId: null,
+  },
+  {
+    name: "DeepSeek (без рег.)",
+    company: "deepseek-chat.ru",
+    description: "Зеркало DeepSeek — тот же ИИ, но без регистрации и без ввода номера телефона. Работает сразу.",
+    logo: "https://upload.wikimedia.org/wikipedia/commons/e/ec/DeepSeek_logo.svg",
+    url: "https://deepseek-chat.ru",
+    urlLabel: "deepseek-chat.ru",
+    tags: ["Код", "Математика", "Текст"],
+    badge: "✅ Без рег.",
+    badgeColor: "bg-emerald-500/20 text-emerald-400 border-emerald-500/30",
+    free: true,
+    vpn: false,
+    vpnNote: null,
+    aliases: ["deepseek без регистрации", "дипсик без регистрации", "зеркало deepseek"],
     ruAlternativeId: null,
   },
   {
@@ -280,12 +296,19 @@ export function CatalogSection() {
 
   const q = query.toLowerCase().trim()
 
-  // Определяем — ищут ли конкретно ChatGPT/GPT
-  const isChatGptSearch = ["chatgpt", "чатгпт", "chat gpt", "gpt", "чат гпт"].some((a) => q.includes(a))
+  // Точный поиск ChatGPT — только если запрос совпадает с алиасами ChatGPT, но не является просто частью другого слова
+  const chatgptAliases = ["chatgpt", "чатгпт", "chat gpt", "чат гпт"]
+  const isChatGptSearch = q !== "" && chatgptAliases.some((a) => q === a || q.startsWith(a + " ") || q.endsWith(" " + a))
+
+  // Точный поиск DeepSeek
+  const deepseekAliases = ["deepseek", "дипсик", "deep seek"]
+  const isDeepSeekSearch = q !== "" && deepseekAliases.some((a) => q === a || q.startsWith(a + " ") || q.endsWith(" " + a))
 
   const filtered = AI_MODELS.filter((m) => {
-    // Если ищут chatgpt — прячем оригинал ChatGPT, показываем Poe вместо него
+    // При поиске chatgpt — прячем оригинал, оставляем TalkAI первым
     if (isChatGptSearch && m.name === "ChatGPT") return false
+    // При поиске deepseek — показываем и оригинал и зеркало
+    // (фильтрация не нужна, оба должны показываться)
 
     const matchQuery =
       q === "" ||
@@ -303,10 +326,13 @@ export function CatalogSection() {
     return matchQuery && matchCat
   })
 
-  // Если ищут chatgpt — показываем Poe первым с баннером
-  const showPoeBanner = isChatGptSearch && q !== ""
-  const sortedFiltered = showPoeBanner
+  const showChatGptBanner = isChatGptSearch
+  const showDeepSeekBanner = isDeepSeekSearch
+
+  const sortedFiltered = showChatGptBanner
     ? [...filtered].sort((a, b) => (a.name === "TalkAI" ? -1 : b.name === "TalkAI" ? 1 : 0))
+    : showDeepSeekBanner
+    ? [...filtered].sort((a, b) => (a.name === "DeepSeek (без рег.)" ? -1 : b.name === "DeepSeek (без рег.)" ? 1 : 0))
     : filtered
 
   return (
@@ -339,13 +365,26 @@ export function CatalogSection() {
         </div>
 
         {/* Smart banner when searching ChatGPT */}
-        {showPoeBanner && (
+        {showChatGptBanner && (
           <div className="mb-8 p-4 rounded-xl border border-emerald-500/30 bg-emerald-500/5 flex items-start gap-3">
             <span className="text-emerald-400 text-xl flex-shrink-0">💡</span>
             <div>
               <p className="text-emerald-300 font-semibold text-sm">ChatGPT недоступен в России без VPN</p>
               <p className="text-gray-400 text-sm mt-0.5">
-                Показываем <span className="text-white font-medium">TalkAI</span> — зеркало ChatGPT, работает без VPN и без регистрации
+                Показываем <span className="text-white font-medium">TalkAI</span> — зеркало ChatGPT без VPN и без регистрации. Оригинал тоже есть ниже.
+              </p>
+            </div>
+          </div>
+        )}
+
+        {/* Smart banner when searching DeepSeek */}
+        {showDeepSeekBanner && (
+          <div className="mb-8 p-4 rounded-xl border border-blue-500/30 bg-blue-500/5 flex items-start gap-3">
+            <span className="text-blue-400 text-xl flex-shrink-0">💡</span>
+            <div>
+              <p className="text-blue-300 font-semibold text-sm">DeepSeek требует регистрацию на официальном сайте</p>
+              <p className="text-gray-400 text-sm mt-0.5">
+                Показываем зеркало <span className="text-white font-medium">DeepSeek (без рег.)</span> — тот же ИИ, сразу в чат.
               </p>
             </div>
           </div>
@@ -366,8 +405,10 @@ export function CatalogSection() {
                 target="_blank"
                 rel="noopener noreferrer"
                 className={`group block border rounded-2xl p-5 transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_0_30px_rgba(239,68,68,0.15)] ${
-                  showPoeBanner && model.name === "TalkAI"
+                  showChatGptBanner && model.name === "TalkAI"
                     ? "bg-emerald-500/5 border-emerald-500/40 hover:border-emerald-400"
+                    : showDeepSeekBanner && model.name === "DeepSeek (без рег.)"
+                    ? "bg-blue-500/5 border-blue-500/40 hover:border-blue-400"
                     : "bg-white/5 border-white/10 hover:border-red-500/50 hover:bg-white/8"
                 }`}
               >
