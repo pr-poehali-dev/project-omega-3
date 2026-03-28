@@ -21,19 +21,19 @@ const AI_MODELS = [
     ruAlternativeId: "Poe",
   },
   {
-    name: "Poe",
-    company: "Quora",
-    description: "ChatGPT, Claude, Gemini и другие в одном интерфейсе. Работает без VPN и без регистрации.",
-    logo: "https://upload.wikimedia.org/wikipedia/commons/1/10/Poe-Logo.png",
-    url: "https://poe.com",
-    urlLabel: "poe.com",
+    name: "TalkAI",
+    company: "talkai.info",
+    description: "ChatGPT без регистрации и без VPN. Работает с российских IP — просто открой и общайся.",
+    logo: "https://upload.wikimedia.org/wikipedia/commons/0/04/ChatGPT_logo.svg",
+    url: "https://talkai.info",
+    urlLabel: "talkai.info",
     tags: ["Текст", "Код", "Аналитика"],
     badge: "✅ Без VPN",
     badgeColor: "bg-emerald-500/20 text-emerald-400 border-emerald-500/30",
     free: true,
     vpn: false,
     vpnNote: null,
-    aliases: ["poe", "поэ", "chatgpt без vpn", "гпт без впн"],
+    aliases: ["poe", "talkai", "толкай", "chatgpt без vpn", "гпт без впн", "chatgpt без регистрации"],
     ruAlternativeId: null,
   },
   {
@@ -306,7 +306,7 @@ export function CatalogSection() {
   // Если ищут chatgpt — показываем Poe первым с баннером
   const showPoeBanner = isChatGptSearch && q !== ""
   const sortedFiltered = showPoeBanner
-    ? [...filtered].sort((a, b) => (a.name === "Poe" ? -1 : b.name === "Poe" ? 1 : 0))
+    ? [...filtered].sort((a, b) => (a.name === "TalkAI" ? -1 : b.name === "TalkAI" ? 1 : 0))
     : filtered
 
   return (
@@ -345,7 +345,7 @@ export function CatalogSection() {
             <div>
               <p className="text-emerald-300 font-semibold text-sm">ChatGPT недоступен в России без VPN</p>
               <p className="text-gray-400 text-sm mt-0.5">
-                Показываем <span className="text-white font-medium">Poe</span> — там есть GPT-4, Claude и Gemini без VPN и без регистрации
+                Показываем <span className="text-white font-medium">TalkAI</span> — зеркало ChatGPT, работает без VPN и без регистрации
               </p>
             </div>
           </div>
@@ -366,7 +366,7 @@ export function CatalogSection() {
                 target="_blank"
                 rel="noopener noreferrer"
                 className={`group block border rounded-2xl p-5 transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_0_30px_rgba(239,68,68,0.15)] ${
-                  showPoeBanner && model.name === "Poe"
+                  showPoeBanner && model.name === "TalkAI"
                     ? "bg-emerald-500/5 border-emerald-500/40 hover:border-emerald-400"
                     : "bg-white/5 border-white/10 hover:border-red-500/50 hover:bg-white/8"
                 }`}
