@@ -2,6 +2,7 @@ import { useState, useEffect } from "react"
 import Icon from "@/components/ui/icon"
 
 const AI_MODELS = [
+  // --- Зарубежные ---
   {
     name: "ChatGPT",
     company: "OpenAI",
@@ -15,6 +16,25 @@ const AI_MODELS = [
     free: true,
     vpn: true,
     vpnNote: "Нужен VPN для РФ",
+    aliases: ["chatgpt", "чатгпт", "gpt", "openai", "chat gpt"],
+    // При поиске по алиасам показываем вместо этой карточки — Poe
+    ruAlternativeId: "Poe",
+  },
+  {
+    name: "Poe",
+    company: "Quora",
+    description: "ChatGPT, Claude, Gemini и другие в одном интерфейсе. Работает без VPN и без регистрации.",
+    logo: "https://upload.wikimedia.org/wikipedia/commons/1/10/Poe-Logo.png",
+    url: "https://poe.com",
+    urlLabel: "poe.com",
+    tags: ["Текст", "Код", "Аналитика"],
+    badge: "✅ Без VPN",
+    badgeColor: "bg-emerald-500/20 text-emerald-400 border-emerald-500/30",
+    free: true,
+    vpn: false,
+    vpnNote: null,
+    aliases: ["poe", "поэ", "chatgpt без vpn", "гпт без впн"],
+    ruAlternativeId: null,
   },
   {
     name: "DeepSeek",
@@ -29,6 +49,8 @@ const AI_MODELS = [
     free: true,
     vpn: false,
     vpnNote: null,
+    aliases: ["deepseek", "дипсик", "deep seek"],
+    ruAlternativeId: null,
   },
   {
     name: "Gemini",
@@ -43,6 +65,8 @@ const AI_MODELS = [
     free: true,
     vpn: true,
     vpnNote: "Нужен VPN для РФ",
+    aliases: ["gemini", "гемини", "google ai", "гугл ии"],
+    ruAlternativeId: null,
   },
   {
     name: "Claude",
@@ -57,20 +81,8 @@ const AI_MODELS = [
     free: true,
     vpn: true,
     vpnNote: "Нужен VPN для РФ",
-  },
-  {
-    name: "Poe",
-    company: "Quora",
-    description: "Агрегатор нейросетей: GPT-4, Claude, Gemini и другие в одном интерфейсе. Работает без VPN.",
-    logo: "https://upload.wikimedia.org/wikipedia/commons/1/10/Poe-Logo.png",
-    url: "https://poe.com",
-    urlLabel: "poe.com",
-    tags: ["Текст", "Код", "Аналитика"],
-    badge: "✅ Без VPN",
-    badgeColor: "bg-emerald-500/20 text-emerald-400 border-emerald-500/30",
-    free: true,
-    vpn: false,
-    vpnNote: null,
+    aliases: ["claude", "клод", "anthropic"],
+    ruAlternativeId: null,
   },
   {
     name: "Grok",
@@ -85,6 +97,8 @@ const AI_MODELS = [
     free: true,
     vpn: false,
     vpnNote: null,
+    aliases: ["grok", "грок", "xai", "маск", "musk"],
+    ruAlternativeId: null,
   },
   {
     name: "Perplexity",
@@ -99,6 +113,8 @@ const AI_MODELS = [
     free: true,
     vpn: false,
     vpnNote: null,
+    aliases: ["perplexity", "перплексити", "поиск ии"],
+    ruAlternativeId: null,
   },
   {
     name: "Midjourney",
@@ -113,6 +129,8 @@ const AI_MODELS = [
     free: false,
     vpn: false,
     vpnNote: null,
+    aliases: ["midjourney", "миджорни", "mj"],
+    ruAlternativeId: null,
   },
   {
     name: "Stable Diffusion",
@@ -127,20 +145,8 @@ const AI_MODELS = [
     free: true,
     vpn: false,
     vpnNote: null,
-  },
-  {
-    name: "Llama",
-    company: "Meta",
-    description: "Открытая языковая модель от Meta. Попробуй онлайн на Meta.ai без скачивания.",
-    logo: "https://upload.wikimedia.org/wikipedia/commons/a/ab/Meta-Logo.png",
-    url: "https://meta.ai",
-    urlLabel: "meta.ai",
-    tags: ["Open-source", "Текст", "Локально"],
-    badge: "🦙 Meta",
-    badgeColor: "bg-blue-600/20 text-blue-300 border-blue-600/30",
-    free: true,
-    vpn: false,
-    vpnNote: null,
+    aliases: ["stable diffusion", "стейбл диффузия", "sd"],
+    ruAlternativeId: null,
   },
   {
     name: "Suno",
@@ -155,6 +161,8 @@ const AI_MODELS = [
     free: true,
     vpn: false,
     vpnNote: null,
+    aliases: ["suno", "суно", "музыка ии"],
+    ruAlternativeId: null,
   },
   {
     name: "ElevenLabs",
@@ -169,10 +177,94 @@ const AI_MODELS = [
     free: true,
     vpn: false,
     vpnNote: null,
+    aliases: ["elevenlabs", "элевен", "голос ии", "tts"],
+    ruAlternativeId: null,
+  },
+
+  // --- Российские ---
+  {
+    name: "GigaChat",
+    company: "Сбер",
+    description: "Российский ИИ-ассистент от Сбера. Отлично понимает русский язык, работает без VPN и ограничений.",
+    logo: "https://upload.wikimedia.org/wikipedia/commons/7/7d/GigaChat_logo.png",
+    url: "https://giga.chat",
+    urlLabel: "giga.chat",
+    tags: ["Текст", "Русский", "Аналитика"],
+    badge: "🇷🇺 Россия",
+    badgeColor: "bg-blue-700/20 text-blue-300 border-blue-700/30",
+    free: true,
+    vpn: false,
+    vpnNote: null,
+    aliases: ["gigachat", "гигачат", "сбер ии", "сбер"],
+    ruAlternativeId: null,
+  },
+  {
+    name: "YandexGPT",
+    company: "Яндекс",
+    description: "Языковая модель Яндекса. Встроена в Алису, отлично работает с русским языком и задачами.",
+    logo: "https://upload.wikimedia.org/wikipedia/commons/9/91/Yandex.svg",
+    url: "https://ya.ru/ai/gpt",
+    urlLabel: "ya.ru/ai/gpt",
+    tags: ["Текст", "Русский", "Поиск"],
+    badge: "🇷🇺 Яндекс",
+    badgeColor: "bg-red-700/20 text-red-300 border-red-700/30",
+    free: true,
+    vpn: false,
+    vpnNote: null,
+    aliases: ["yandexgpt", "яндекс гпт", "яндекс ии", "алиса", "yagpt"],
+    ruAlternativeId: null,
+  },
+  {
+    name: "Kandinsky",
+    company: "Сбер",
+    description: "Российский генератор изображений от Сбера. Понимает запросы на русском языке, работает без VPN.",
+    logo: "https://upload.wikimedia.org/wikipedia/commons/7/7d/GigaChat_logo.png",
+    url: "https://fusionbrain.ai",
+    urlLabel: "fusionbrain.ai",
+    tags: ["Изображения", "Русский", "Арт"],
+    badge: "🇷🇺 Арт",
+    badgeColor: "bg-indigo-600/20 text-indigo-300 border-indigo-600/30",
+    free: true,
+    vpn: false,
+    vpnNote: null,
+    aliases: ["kandinsky", "кандинский", "fusion brain", "фьюжн брейн", "сбер картинки"],
+    ruAlternativeId: null,
+  },
+  {
+    name: "Шедеврум",
+    company: "Яндекс",
+    description: "Генерация изображений по тексту на русском языке от Яндекса. Простой интерфейс, без VPN.",
+    logo: "https://upload.wikimedia.org/wikipedia/commons/9/91/Yandex.svg",
+    url: "https://shedevrum.ai",
+    urlLabel: "shedevrum.ai",
+    tags: ["Изображения", "Русский", "Дизайн"],
+    badge: "🇷🇺 Фото",
+    badgeColor: "bg-orange-700/20 text-orange-300 border-orange-700/30",
+    free: true,
+    vpn: false,
+    vpnNote: null,
+    aliases: ["шедеврум", "shedevrum", "яндекс картинки", "яндекс изображения"],
+    ruAlternativeId: null,
+  },
+  {
+    name: "SaluteSpeech",
+    company: "Сбер",
+    description: "Синтез и распознавание русской речи от Сбера. Лучшее качество голоса для русского языка.",
+    logo: "https://upload.wikimedia.org/wikipedia/commons/7/7d/GigaChat_logo.png",
+    url: "https://salute.sber.ru/salutespeech",
+    urlLabel: "salute.sber.ru",
+    tags: ["Голос", "TTS", "Русский"],
+    badge: "🇷🇺 Голос",
+    badgeColor: "bg-green-700/20 text-green-300 border-green-700/30",
+    free: false,
+    vpn: false,
+    vpnNote: null,
+    aliases: ["salutespeech", "салют спич", "сбер голос", "русский tts"],
+    ruAlternativeId: null,
   },
 ]
 
-const CATEGORIES = ["Все", "Текст", "Код", "Изображения", "Видео", "Музыка", "Голос", "Поиск", "Open-source"]
+const CATEGORIES = ["Все", "🇷🇺 Русские", "Текст", "Код", "Изображения", "Музыка", "Голос", "Поиск", "Open-source"]
 
 export function CatalogSection() {
   const [query, setQuery] = useState("")
@@ -186,15 +278,36 @@ export function CatalogSection() {
     return () => window.removeEventListener("neural-search", handler)
   }, [])
 
+  const q = query.toLowerCase().trim()
+
+  // Определяем — ищут ли конкретно ChatGPT/GPT
+  const isChatGptSearch = ["chatgpt", "чатгпт", "chat gpt", "gpt", "чат гпт"].some((a) => q.includes(a))
+
   const filtered = AI_MODELS.filter((m) => {
+    // Если ищут chatgpt — прячем оригинал ChatGPT, показываем Poe вместо него
+    if (isChatGptSearch && m.name === "ChatGPT") return false
+
     const matchQuery =
-      query === "" ||
-      m.name.toLowerCase().includes(query.toLowerCase()) ||
-      m.description.toLowerCase().includes(query.toLowerCase()) ||
-      m.tags.some((t) => t.toLowerCase().includes(query.toLowerCase()))
-    const matchCat = activeCategory === "Все" || m.tags.includes(activeCategory)
+      q === "" ||
+      m.name.toLowerCase().includes(q) ||
+      m.company.toLowerCase().includes(q) ||
+      m.description.toLowerCase().includes(q) ||
+      m.tags.some((t) => t.toLowerCase().includes(q)) ||
+      m.aliases.some((a) => a.includes(q))
+
+    const matchCat =
+      activeCategory === "Все" ||
+      (activeCategory === "🇷🇺 Русские" && m.tags.includes("Русский")) ||
+      m.tags.includes(activeCategory)
+
     return matchQuery && matchCat
   })
+
+  // Если ищут chatgpt — показываем Poe первым с баннером
+  const showPoeBanner = isChatGptSearch && q !== ""
+  const sortedFiltered = showPoeBanner
+    ? [...filtered].sort((a, b) => (a.name === "Poe" ? -1 : b.name === "Poe" ? 1 : 0))
+    : filtered
 
   return (
     <section id="catalog" className="py-20 bg-black">
@@ -204,7 +317,7 @@ export function CatalogSection() {
             Каталог нейросетей
           </h2>
           <p className="text-gray-400 text-lg max-w-2xl mx-auto">
-            {filtered.length} инструментов — кликни на карточку, чтобы перейти на сайт
+            {sortedFiltered.length} инструментов — кликни на карточку, чтобы перейти на сайт
           </p>
         </div>
 
@@ -225,21 +338,38 @@ export function CatalogSection() {
           ))}
         </div>
 
+        {/* Smart banner when searching ChatGPT */}
+        {showPoeBanner && (
+          <div className="mb-8 p-4 rounded-xl border border-emerald-500/30 bg-emerald-500/5 flex items-start gap-3">
+            <span className="text-emerald-400 text-xl flex-shrink-0">💡</span>
+            <div>
+              <p className="text-emerald-300 font-semibold text-sm">ChatGPT недоступен в России без VPN</p>
+              <p className="text-gray-400 text-sm mt-0.5">
+                Показываем <span className="text-white font-medium">Poe</span> — там есть GPT-4, Claude и Gemini без VPN и без регистрации
+              </p>
+            </div>
+          </div>
+        )}
+
         {/* Cards grid */}
-        {filtered.length === 0 ? (
+        {sortedFiltered.length === 0 ? (
           <div className="text-center py-20 text-gray-500">
             <p className="text-2xl mb-2">🤖</p>
             <p>Ничего не найдено по запросу «{query}»</p>
           </div>
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-            {filtered.map((model, index) => (
+            {sortedFiltered.map((model, index) => (
               <a
                 key={index}
                 href={model.url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="group block bg-white/5 border border-white/10 rounded-2xl p-5 hover:border-red-500/50 hover:bg-white/8 transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_0_30px_rgba(239,68,68,0.15)]"
+                className={`group block border rounded-2xl p-5 transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_0_30px_rgba(239,68,68,0.15)] ${
+                  showPoeBanner && model.name === "Poe"
+                    ? "bg-emerald-500/5 border-emerald-500/40 hover:border-emerald-400"
+                    : "bg-white/5 border-white/10 hover:border-red-500/50 hover:bg-white/8"
+                }`}
               >
                 <div className="flex items-start justify-between mb-4">
                   <div className="w-12 h-12 rounded-xl bg-white/10 flex items-center justify-center overflow-hidden flex-shrink-0">
@@ -248,8 +378,8 @@ export function CatalogSection() {
                       alt={model.name}
                       className="w-8 h-8 object-contain"
                       onError={(e) => {
-                        (e.target as HTMLImageElement).style.display = "none"
-                        ;(e.target as HTMLImageElement).parentElement!.innerHTML = `<span class="text-2xl font-bold text-white">${model.name[0]}</span>`
+                        ;(e.target as HTMLImageElement).style.display = "none"
+                        ;(e.target as HTMLImageElement).parentElement!.innerHTML = `<span class="text-xl font-bold text-white">${model.name[0]}</span>`
                       }}
                     />
                   </div>
@@ -278,6 +408,7 @@ export function CatalogSection() {
                     Открыть <Icon name="ArrowRight" size={12} />
                   </span>
                 </div>
+
                 {model.vpn && (
                   <div className="mt-3 pt-3 border-t border-white/5 flex items-center gap-1.5">
                     <span className="text-amber-400 text-xs">⚠️</span>
